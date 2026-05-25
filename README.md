@@ -25,7 +25,7 @@ This project automates the extraction to Excel spreadsheets from the text export
 Clone the repository:
 
 ```bash
-git clone https://github.com/Rhuanzila/lotus-output-converter.git
+git clone https://github.com/rhuanrissatto/lotus-output-converter.git
 ```
 
 Install dependencies:
@@ -35,3 +35,51 @@ pip install -r requirements.txt
 ```
 
 ---
+## Usage
+
+Run the script:
+
+```bash
+python lotus_converter.py
+```
+
+Paste the Lotus output into the terminal.
+
+Finish input with:
+
+### Windows
+
+```text
+Ctrl + Z + Enter
+```
+
+### Linux / Mac
+
+```text
+Ctrl + D
+```
+
+The generated spreadsheet will be saved automatically as:
+
+```text
+lotus_output.xlsx
+```
+
+---
+
+## Example Output Structure
+
+The generated Excel file contains:
+
+- Front Suspension Points
+- Rear Suspension Points
+- Front Bump Simulation
+- Rear Bump Simulation
+- Front Roll Simulation
+- Rear Roll Simulation
+- Steering Travel Simulation
+
+## Author
+
+Rhuan Rissatto Araújo  
+Formula UTFPR — 2026
