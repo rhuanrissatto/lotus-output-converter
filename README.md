@@ -40,7 +40,7 @@ pip install -r requirements.txt
 Run the script:
 
 ```bash
-python lotus_converter.py
+python Lotus-Excel.py
 ```
 
 Paste the Lotus output into the terminal.
