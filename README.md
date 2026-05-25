@@ -79,6 +79,12 @@ The generated Excel file contains:
 - Rear Roll Simulation
 - Steering Travel Simulation
 
+## Download
+
+Baixe a versão mais recente em:
+
+[[Releases](../../releases)](https://github.com/rhuanrissatto/lotus-output-converter/releases/tag/v1.0)
+
 ## Author
 
 Rhuan Rissatto Araújo  
