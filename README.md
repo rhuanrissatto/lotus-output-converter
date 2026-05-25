@@ -81,7 +81,7 @@ The generated Excel file contains:
 
 ## Download
 
-Baixe a versão mais recente em:
+Download the newest version in:
 
 [[Releases](../../releases)](https://github.com/rhuanrissatto/lotus-output-converter/releases/tag/v1.0)
 
