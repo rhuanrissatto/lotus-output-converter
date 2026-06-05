@@ -40,6 +40,25 @@ hd_simulacao_steering_travel = ["Toe Angle RHS (deg)",
                                 "Turning Circle Radius (mm)"
 ]
 
+hd_simulacao_incremental_bump = ["Anti Dive (%)",
+                                 "Anti Squat (%)",
+                                 "Roll Centre Height to Body (mm)",
+                                 "Roll Centre Height to Grnd (mm)",
+                                 "Half Track Change (mm)",
+                                 "Wheelbase Change (mm)",
+                                 "Damper Travel (mm)",
+                                 "Spring Travel (mm)"
+]
+
+hd_simulacao_incremental_roll = ["Roll centre pos X (mm)",
+                                 "Roll centre pos Y (mm)",
+                                 "Roll centre pos Z (mm)",
+                                 "Half Track Change (mm)",
+                                 "Wheelbase Change (mm)",
+                                 "Damper Travel (mm)",
+                                 "Spring Travel (mm)"
+]
+
 hd_simulacao_r_b = ["Camber Angle (deg)",
                      "Toe Angle (deg)",
                      "Castor Angle (deg)",
@@ -99,6 +118,10 @@ valores_bump_rear = []
 valores_roll_front = []
 valores_roll_rear = []
 valores_steering_front = []
+valores_incremental_front_bump = []
+valores_incremental_rear_bump = []
+valores_incremental_front_roll = []
+valores_incremental_rear_roll = []
 
 def pegar_valores(inicio, fim, array):
     for j in range(inicio, fim):
@@ -107,9 +130,13 @@ def pegar_valores(inicio, fim, array):
 pegar_valores(front_suspension_linha+6, front_suspension_linha+28, coordenadas_dianteira)
 pegar_valores(rear_suspension_linha+6, rear_suspension_linha+28, coordenadas_traseira)
 pegar_valores(front_suspension_linha_bump+12, front_suspension_linha_bump+24, valores_bump_front)
+pegar_valores(front_suspension_linha_bump+35, front_suspension_linha_bump+47, valores_incremental_front_bump)
 pegar_valores(rear_suspension_linha_bump+12, rear_suspension_linha_bump+24, valores_bump_rear)
+pegar_valores(rear_suspension_linha_bump+35, rear_suspension_linha_bump+47, valores_incremental_rear_bump)
 pegar_valores(front_suspension_linha_roll+12, front_suspension_linha_roll+31, valores_roll_front)
+pegar_valores(front_suspension_linha_roll+40, front_suspension_linha_roll+59, valores_incremental_front_roll)
 pegar_valores(rear_suspension_linha_roll+12, rear_suspension_linha_roll+31, valores_roll_rear)
+pegar_valores(rear_suspension_linha_roll+40, rear_suspension_linha_roll+59, valores_incremental_rear_roll)
 pegar_valores(front_suspension_linha_steering+11, front_suspension_linha_steering+32, valores_steering_front)
 
 #Transformação dos vetores em dataframes, com suas headlines específicas
@@ -120,12 +147,19 @@ def formatar_array_sim(array, simulacao, restante_hd):
     df[sim] = df[sim].apply(pd.to_numeric)
     return df
 
+
+dfSimulacaoRearBumpInc = formatar_array_sim(valores_incremental_rear_bump, "Bump Travel (mm)", hd_simulacao_incremental_bump)
+dfSimulacaoFrontBumpInc = formatar_array_sim(valores_incremental_front_bump, "Bump Travel (mm)", hd_simulacao_incremental_bump)
 dfSimulacaoFrontBump = formatar_array_sim(valores_bump_front, "Bump Travel (mm)", hd_simulacao_r_b)
 dfSimulacaoRearBump = formatar_array_sim(valores_bump_rear, "Bump Travel (mm)", hd_simulacao_r_b)
 dfSimulacaoFrontRoll = formatar_array_sim(valores_roll_front, "Roll Angle (deg)", hd_simulacao_r_b)
+dfSimulacaoFrontRollInc = formatar_array_sim(valores_incremental_front_roll, "Roll Angle (deg)", hd_simulacao_incremental_roll)
 dfSimulacaoRearRoll = formatar_array_sim(valores_roll_rear, "Roll Angle (deg)", hd_simulacao_r_b)
+dfSimulacaoRearRollInc = formatar_array_sim(valores_incremental_rear_roll, "Roll Angle (deg)", hd_simulacao_incremental_roll)
 dfSimulacaoFrontSteering = formatar_array_sim(valores_steering_front, "Rack Travel (mm)", hd_simulacao_steering_travel)
 
+#print(dfSimulacaoFrontRollInc)
+#print(dfSimulacaoFrontBumpInc)
 #print(dfSimulacaoFrontSteering)
 #print(dfSimulacaoRearRoll)
 
@@ -147,12 +181,37 @@ caminho_excel = os.path.join(pasta_script, "lotus_output.xlsx")
 
 #Escrita no Excel dos dataframes
 with pd.ExcelWriter(caminho_excel, engine="openpyxl") as writer:
-    dfCoordenadas_dianteira.to_excel(writer, sheet_name="Front Points", index=False)
-    dfCoordenadas_traseira.to_excel(writer, sheet_name="Rear Points", index=False)
-    dfSimulacaoFrontRoll.to_excel(writer, sheet_name="Front Roll", index=False)
-    dfSimulacaoRearRoll.to_excel(writer, sheet_name="Rear Roll", index=False)
-    dfSimulacaoFrontBump.to_excel(writer, sheet_name="Front Bump", index=False)   
-    dfSimulacaoRearBump.to_excel(writer, sheet_name="Rear Bump", index=False)
+    
+    dfCoordenadas_dianteira.to_excel(writer, sheet_name="Points Coordinates", startrow=0, startcol=0, index=False)
+
+    dfCoordenadas_traseira.to_excel(writer, sheet_name="Points Coordinates",
+                                     startrow=0, startcol=len(dfCoordenadas_dianteira.columns) + 2,
+                                     index=False)
+    
+    dfSimulacaoFrontRoll.to_excel(writer, sheet_name="Front Roll", startrow=0, startcol = 0, index=False)
+
+    dfSimulacaoFrontRollInc.to_excel(writer, sheet_name="Front Roll",
+                                     startrow=len(dfSimulacaoFrontRoll)+2, startcol=0,
+                                     index=False)
+    
+    dfSimulacaoRearRoll.to_excel(writer, sheet_name="Rear Roll",startrow=0,startcol=0, index=False)
+    
+    dfSimulacaoRearRollInc.to_excel(writer, sheet_name="Rear Roll",
+                                    startrow=len(dfSimulacaoRearRoll)+2, startcol=0,
+                                    index=False)
+
+    dfSimulacaoFrontBump.to_excel(writer, sheet_name="Front Bump",startrow=0, startcol=0, index=False)
+
+    dfSimulacaoFrontBumpInc.to_excel(writer, sheet_name="Front Bump",
+                                     startrow=len(dfSimulacaoFrontBump) + 2, startcol=0,
+                                     index=False)
+
+    dfSimulacaoRearBump.to_excel(writer, sheet_name="Rear Bump", startrow=0, startcol=0, index=False)
+
+    dfSimulacaoRearBumpInc.to_excel(writer, sheet_name="Rear Bump",
+                                    startrow=len(dfSimulacaoRearBump) + 2, startcol=0,
+                                    index = False)
+    
     dfSimulacaoFrontSteering.to_excel(writer, sheet_name="Front Steering", index=False)
 
 print(f"Arquivo salvo em:\n{caminho_excel}")
