@@ -83,7 +83,7 @@ The generated Excel file contains:
 
 Download the newest version in:
 
-[[Releases](../../releases)](https://github.com/rhuanrissatto/lotus-output-converter/releases/tag/v1.0)
+[[[Releases](../../releases)](https://github.com/rhuanrissatto/lotus-output-converter/releases/tag/v1.0)](https://github.com/rhuanrissatto/lotus-output-converter/releases/tag/v1.1)
 
 ## Author
 
